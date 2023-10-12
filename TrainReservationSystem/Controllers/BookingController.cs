@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//This Controller handles all the bookings of the train reservation system
+
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NuGet.Protocol.Plugins;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using TrainReservationSystem.Models;
 
 namespace TrainReservationSystem.Controllers
 {
+    //Define Route
     [Route("api/[controller]")]
     [ApiController]
     public class BookingController : ControllerBase
@@ -17,6 +21,7 @@ namespace TrainReservationSystem.Controllers
 
         public BookingController(IMongoDatabase database)
         {
+            // Initialize the MongoDB collection used for bookings
             _bookingCollection = database.GetCollection<Book>("train_booking");
         }
 
@@ -26,12 +31,14 @@ namespace TrainReservationSystem.Controllers
         {
             try
             {
+                // Retrieve all bookings from the MongoDB collection
                 var bookings = await _bookingCollection.Find(_ => true).ToListAsync();
 
                 return Ok(bookings);
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -42,7 +49,7 @@ namespace TrainReservationSystem.Controllers
         {
             try
             {
-                // Find the booking to be updated by nic, booking date and train name
+                // Define a filter to find the booking to be updated by NIC, booking date, and train name
                 var booking_filter = Builders<Book>.Filter.And(
                                         Builders<Book>.Filter.Eq(b => b.Trainname, updatedBooking.Trainname),
                                         Builders<Book>.Filter.Eq(b => b.Bookingdate, updatedBooking.Bookingdate),
@@ -80,6 +87,7 @@ namespace TrainReservationSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -91,7 +99,7 @@ namespace TrainReservationSystem.Controllers
             try
             {
 
-                // Check if a booking with the same nic, trainname, and reservationdate already exists
+                // Check if a booking with the same NIC, train name, and reservation date already exists
                 var existingBooking = await _bookingCollection.Find(b =>
                     b.Nic == newBooking.Nic &&
                     b.Trainname == newBooking.Trainname &&
@@ -110,6 +118,7 @@ namespace TrainReservationSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

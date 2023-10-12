@@ -1,4 +1,6 @@
-﻿using System;
+﻿//This Model store all the Users
+
+using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

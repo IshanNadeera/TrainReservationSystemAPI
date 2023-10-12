@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//This Controller handles all the Trains of the train reservation system
+
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NuGet.Protocol.Plugins;
@@ -9,6 +11,7 @@ using TrainReservationSystem.Models;
 
 namespace TrainReservationSystem.Controllers
 {
+    //Define Route
     [Route("api/[controller]")]
     [ApiController]
     public class TrainController : ControllerBase
@@ -17,6 +20,7 @@ namespace TrainReservationSystem.Controllers
 
         public TrainController(IMongoDatabase database)
         {
+            // Initialize the MongoDB collection used for train schedules
             _trainCollection = database.GetCollection<Train>("train_schedule");
         }
 
@@ -26,12 +30,14 @@ namespace TrainReservationSystem.Controllers
         {
             try
             {
+                // Retrieve all train schedules from the MongoDB collection
                 var trains = await _trainCollection.Find(_ => true).ToListAsync();
 
                 return Ok(trains);
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -57,6 +63,7 @@ namespace TrainReservationSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -105,6 +112,7 @@ namespace TrainReservationSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
