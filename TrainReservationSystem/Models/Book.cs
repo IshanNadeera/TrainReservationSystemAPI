@@ -1,4 +1,6 @@
-﻿using System;
+﻿//This Model store all the Bookings
+
+using System;
 using System.Net.Sockets;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;

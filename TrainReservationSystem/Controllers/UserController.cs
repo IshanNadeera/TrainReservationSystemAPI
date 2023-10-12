@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//This Controller handles all the Users of the train reservation system
+
+
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using NuGet.Protocol.Plugins;
@@ -9,6 +12,7 @@ using TrainReservationSystem.Models;
 
 namespace TrainReservationSystem.Controllers
 {
+    //Define Route
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -17,6 +21,7 @@ namespace TrainReservationSystem.Controllers
 
         public UserController(IMongoDatabase database)
         {
+            // Initialize the MongoDB collection used for user data
             _userCollection = database.GetCollection<User>("user");
         }
 
@@ -26,12 +31,14 @@ namespace TrainReservationSystem.Controllers
         {
             try
             {
+                // Retrieve all users from the MongoDB collection
                 var users = await _userCollection.Find(_ => true).ToListAsync();
 
                 return Ok(users);
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -42,6 +49,7 @@ namespace TrainReservationSystem.Controllers
         {
             try
             {
+                // Find a user by NIC
                 var user = await _userCollection.Find(u => u.Nic == loginRequest.NIC).SingleOrDefaultAsync();
 
                 if (user == null)
@@ -58,6 +66,7 @@ namespace TrainReservationSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -83,6 +92,7 @@ namespace TrainReservationSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -126,6 +136,7 @@ namespace TrainReservationSystem.Controllers
             }
             catch (Exception ex)
             {
+                // Handle exceptions and return an error response
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

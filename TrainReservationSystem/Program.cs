@@ -38,7 +38,7 @@ if (app.Environment.IsDevelopment())
 // Add CORS middleware to allow requests from specified origins
 app.UseCors(options =>
 {
-    options.WithOrigins("http://127.0.0.1") // Replace with your allowed origin(s)
+    options.WithOrigins("http://127.0.0.1")
            .AllowAnyHeader()
            .AllowAnyMethod();
 });
